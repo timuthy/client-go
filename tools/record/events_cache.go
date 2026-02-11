@@ -148,6 +148,8 @@ func (f *EventSourceObjectSpamFilter) Filter(event *v1.Event) bool {
 	// update the cache
 	f.cache.Add(eventKey, record)
 
+	panic("here")
+
 	if filter {
 		panic(fmt.Sprintf("Dropping event because it has been seen too frequently recently: %+v", *event))
 	}

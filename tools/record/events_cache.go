@@ -27,9 +27,10 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/strategicpatch"
-	"k8s.io/client-go/util/flowcontrol"
 	"k8s.io/utils/clock"
 	"k8s.io/utils/lru"
+
+	"k8s.io/client-go/util/flowcontrol"
 )
 
 const (
@@ -146,6 +147,10 @@ func (f *EventSourceObjectSpamFilter) Filter(event *v1.Event) bool {
 
 	// update the cache
 	f.cache.Add(eventKey, record)
+
+	if filter {
+		panic(fmt.Sprintf("Dropping event because it has been seen too frequently recently: %+v", *event))
+	}
 
 	return filter
 }
